@@ -1,5 +1,6 @@
 
-![GoReportCard](https://goreportcard.com/report/github.com/nub06/iis-hero)
+[![Go Report Card](https://goreportcard.com/badge/github.com/nub06/iis-heroe)](https://goreportcard.com/report/github.com/nub06/iis-hero)
+
 
 # What is iis-hero? 
 
