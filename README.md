@@ -1,4 +1,6 @@
 
+![GoReportCard](https://goreportcard.com/report/github.com/nub06/iis-hero)
+
 # What is iis-hero? 
 
 iis-hero is a CLI management tool for IIS servers. It provides access and management capabilities to remote IIS servers.

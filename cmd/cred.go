@@ -66,7 +66,7 @@ var credCmd = &cobra.Command{
 
 func init() {
 
-	credCmd.Flags().BoolP("force", "f", false, "Use this command if you want to see password without asteriks")
+	credCmd.Flags().BoolP("force", "f", false, "Use this command if you want to see password without asterisk")
 }
 
 func setRemoteComputerDetails() service.RemoteComputer {

@@ -210,7 +210,7 @@ func (r RemoteComputer) AppChangePool(site string, app string, pool string) {
 			fmt.Println(color.HiRedString(`The ApplicationPool "%s" is couldn't find. Try a validate Application Pool`, pool))
 		}
 
-		fmt.Println(color.HiGreenString(`Changing pool of applicaton "%s"`, app))
+		fmt.Println(color.HiGreenString(`Changing pool of application "%s"`, app))
 
 		r.RunCommandPlain(psCommand)
 
@@ -229,7 +229,7 @@ func (r RemoteComputer) AppChangePreload(site string, app string, preload string
 			Set-ItemProperty "IIS:\Sites\$site\$app" -Name "preloadEnabled" -Value %s
 			`, site, app, preload)
 
-		fmt.Println(color.HiGreenString(`Changing preloadenabled value of applicaton "%s"`, app))
+		fmt.Println(color.HiGreenString(`Changing preloadenabled value of application "%s"`, app))
 
 		r.RunCommandPlain(psCommand)
 
@@ -248,7 +248,7 @@ func (r RemoteComputer) AppChangePath(site string, app string, path string) {
 		Set-WebConfiguration -Filter "/system.applicationHost/sites/site[@name='$siteName']/application[@path='$appPath']/virtualDirectory[@path='/']" -Value @{physicalPath="$newPath"}
 			`, site, app, path)
 
-		fmt.Println(color.HiGreenString(`Changing physical path of applicaton "%s"`, app))
+		fmt.Println(color.HiGreenString(`Changing physical path of application "%s"`, app))
 		r.RunCommandPlain(psCommand)
 
 	}
@@ -266,7 +266,7 @@ func (r RemoteComputer) AppRename(site string, app string, rename string) {
 	Set-WebConfigurationProperty -Filter "/system.applicationHost/sites/site[@name='$siteName']/application[@path='$appPath']" -Name "path" -Value "/$rename"
 		`, site, app, rename)
 
-		fmt.Println(color.HiGreenString(`Renaming applicaton "%s"`, app))
+		fmt.Println(color.HiGreenString(`Renaming application "%s"`, app))
 
 		r.RunCommandPlain(psCommand)
 
