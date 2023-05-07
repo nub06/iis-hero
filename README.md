@@ -770,6 +770,9 @@ iis-hero winsvc restart MyWinService
 iis-hero winsvc list MyWinService
 iis-hero winsvc ls MyWinService
 ```
+
+![winsvc](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/winsvc.gif)
+
 ## Current state of the Windows Service.
 
 - Usage:
@@ -781,9 +784,6 @@ iis-hero winsvc ls MyWinService
 ```
 iis-hero winsvc state MyWinService
 ```
-
-
-![winsvc](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/winsvc.gif)
 
 # Folder Commands.
 
