@@ -21,7 +21,7 @@ Check your `$GOPATH/bin`
 You can rename the binary name if you don't want to use CLI as `iis-hero`
 
 
-# Feautures
+# Features
 
 #### Available Commands 
 
