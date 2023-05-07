@@ -293,6 +293,10 @@ iis-hero site ls -n MySite
 iis-hero site ls --name MySite
 
 ```
+
+![site](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/site.gif)
+
+
 ## Removing an IIS Website.
 
 - Usage:
@@ -409,6 +413,10 @@ iis-hero pool create NewAppPool --startmode OnDemand --clr v4
 iis-hero pool create NewAppPool --clr v2 --idleaction 5
 
 ```
+
+![poolcreate](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/poolcreate.gif)
+
+
 ## Listing IIS Application Pools and properties.
 
 - Usage: 
@@ -434,6 +442,8 @@ iis-hero pool ls -s
 iis-hero pool ls
 ```
 
+![pool](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/pool.gif)
+
 ## Removing an IIS Application Pool.
 
 - Usage:
@@ -452,6 +462,8 @@ iis-hero pool ls
 iis pool remove NewAppPool
 iis pool remove NewAppPool -f
 ```
+
+![poolrm](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/poolrm.gif)
 
 ## Starting an IIS Application Pool.
 
@@ -551,6 +563,8 @@ iis-hero vdir create NewVirtualDirectory --site MyWebSite --path D:\Application\
 iis-hero vdir list
 ```
 
+![vdir](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/vdir.gif)
+
 ## Removing IIS Virtual Directory.
 - Usage:
   -` iis-hero vdir remove <name> [flags]`
@@ -573,6 +587,9 @@ iis-hero vdir rm NewVirtualDirectory --site NewWebsite --app MyApp
 ``` 
 
 # IIS Application Commands.
+
+
+![app](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/app.gif)
 
 - If you do not specify a site with the `--site` flag, the CLI will search for the site of the application you specified as `<application name>`. If it cannot find it, it will show you a warning. In that case, use the `--site` flag to specify the site name.
 
@@ -764,6 +781,9 @@ iis-hero winsvc ls MyWinService
 ```
 iis-hero winsvc state MyWinService
 ```
+
+
+![winsvc](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/winsvc.gif)
 
 # Folder Commands.
 
