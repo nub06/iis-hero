@@ -164,7 +164,52 @@ func (r RemoteComputer) ListAllSites() []model.SitesIIS {
 	psCommand := `
 	Import-Module WebAdministration
 
-	$sites = Get-ChildItem -Path IIS:\Sites | ForEach-Object {
+$sites = Get-ChildItem -Path IIS:\Sites | ForEach-Object {
+    $site = $_
+    $virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
+    $applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""
+
+    $preloadEnabled = $site.Collection.preloadEnabled
+    if ($applications) {
+        $preloadEnabled += (Get-WebApplication -Site $site.Name).Collection.preloadEnabled
+    }
+
+    $preloadEnabled = ($preloadEnabled | Select-Object -Unique) -join ", "
+    
+    $protocol = ($site.bindings.collection.protocol | Select-Object -Unique) -join ", "
+    $bindings = ($site.bindings.collection.bindingInformation | Select-Object -Unique) -join ", "
+
+    [PSCustomObject]@{
+        Name = $site.name
+        ApplicationPool = $site.applicationPool
+        State = $site.state
+        PhysicalPath = $site.physicalPath
+        Bindings = $bindings
+        Protocol = $protocol
+        PreloadEnabled = $preloadEnabled
+        VirtualDirectories = $virtualDirectories
+        Applications = ($applications -join ",")
+    }
+}
+Write-Output $sites
+`
+
+	res := r.RunCommandJSON(psCommand)
+	res = strings.TrimRight(res, "\n")
+	siteModel := util.JsonToStructIISSite(res)
+
+	//If application pool remove with force command. Sites States are coming null.
+	r.prepModel(siteModel)
+
+	return setBindings(siteModel)
+}
+
+func (r RemoteComputer) WebSitesListByStatus(status string) []model.SitesIIS {
+
+	psCommand := fmt.Sprintf(`
+	Import-Module WebAdministration
+
+	$sites = Get-ChildItem -Path IIS:\Sites  | Where-Object { $_.state -eq '%s'  } | ForEach-Object {
 		$site = $_
 		$virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
 		$applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""
@@ -175,57 +220,27 @@ func (r RemoteComputer) ListAllSites() []model.SitesIIS {
 		}
 	
 		$preloadEnabled = ($preloadEnabled | Select-Object -Unique) -join ", "
+		
+		$protocol = ($site.bindings.collection.protocol | Select-Object -Unique) -join ", "
+		$bindings = ($site.bindings.collection.bindingInformation | Select-Object -Unique) -join ", "
 	
 		[PSCustomObject]@{
 			Name = $site.name
 			ApplicationPool = $site.applicationPool
 			State = $site.state
 			PhysicalPath = $site.physicalPath
-			Bindings = $site.bindings.collection.bindingInformation
+			Bindings = $bindings
+			Protocol = $protocol
 			PreloadEnabled = $preloadEnabled
-			Protocol = $site.bindings.collection.protocol
 			VirtualDirectories = $virtualDirectories
 			Applications = ($applications -join ",")
 		}
 	}
-	 Write-Output $sites
-	`
+	Write-Output $sites
+`, status)
 
 	res := r.RunCommandJSON(psCommand)
 	res = strings.TrimRight(res, "\n")
-
-	siteModel := util.JsonToStructIISSite(res)
-
-	//If application pool remove with force command. Sites States are coming null.
-	r.prepModel(siteModel)
-
-	return setBindings(siteModel)
-}
-
-func (r RemoteComputer) ListStartedSites() []model.SitesIIS {
-
-	psCommand := `Import-Module WebAdministration;
-	Get-ChildItem -Path IIS:\Sites | Where-Object { $_.state -eq 'Started' } | Select-Object  name, applicationPool,state,physicalPath, @{ Label='bindings'; Expression={$_.bindings.collection.bindingInformation}} ,@{Label='PreloadEnabled'; Expression={$_.Collection.preloadEnabled}}, @{ Label='protocol'; Expression={$_.bindings.collection.protocol}}
-	`
-
-	res := r.RunCommandJSON(psCommand)
-	res = strings.TrimRight(res, "\n")
-
-	siteModel := util.JsonToStructIISSite(res)
-	r.prepModel(siteModel)
-
-	return setBindings(siteModel)
-}
-
-func (r RemoteComputer) ListStoppedSites() []model.SitesIIS {
-
-	psCommand := `Import-Module WebAdministration;
-	Get-ChildItem -Path IIS:\Sites | Where-Object { $_.state -eq 'Stopped' } | Select-Object  name, applicationPool,state,physicalPath, @{ Label='bindings'; Expression={$_.bindings.collection.bindingInformation}} ,@{Label='PreloadEnabled'; Expression={$_.Collection.preloadEnabled}}, @{ Label='protocol'; Expression={$_.bindings.collection.protocol}}
-	`
-
-	res := r.RunCommandJSON(psCommand)
-	res = strings.TrimRight(res, "\n")
-
 	siteModel := util.JsonToStructIISSite(res)
 	r.prepModel(siteModel)
 
@@ -235,32 +250,36 @@ func (r RemoteComputer) ListStoppedSites() []model.SitesIIS {
 func (r RemoteComputer) ListSingleSite(siteName string) []model.SitesIIS {
 
 	psCommand := fmt.Sprintf(`
-	Import-Module WebAdministration	
-		$sites = Get-ChildItem -Path IIS:\Sites | Where-Object { $_.Name -eq '%s' }| ForEach-Object {
-			$site = $_
-			$virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
-			$applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""
-		
-			$preloadEnabled = $site.Collection.preloadEnabled
-			if ($applications) {
-				$preloadEnabled += (Get-WebApplication -Site $site.Name).Collection.preloadEnabled
-			}
-		
-			$preloadEnabled = ($preloadEnabled | Select-Object -Unique) -join ", "
-		
-			[PSCustomObject]@{
-				Name = $site.name
-				ApplicationPool = $site.applicationPool
-				State = $site.state
-				PhysicalPath = $site.physicalPath
-				Bindings = $site.bindings.collection.bindingInformation
-				PreloadEnabled = $preloadEnabled
-				Protocol = $site.bindings.collection.protocol
-				VirtualDirectories = $virtualDirectories
-				Applications = ($applications -join ",")
-			}
-		}
-		 Write-Output $sites`, siteName)
+	Import-Module WebAdministration
+
+$sites = Get-ChildItem -Path IIS:\Sites  | Where-Object { $_.Name -eq '%s' } | ForEach-Object {
+    $site = $_
+    $virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
+    $applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""
+
+    $preloadEnabled = $site.Collection.preloadEnabled
+    if ($applications) {
+        $preloadEnabled += (Get-WebApplication -Site $site.Name).Collection.preloadEnabled
+    }
+
+    $preloadEnabled = ($preloadEnabled | Select-Object -Unique) -join ", "
+    
+    $protocol = ($site.bindings.collection.protocol | Select-Object -Unique) -join ", "
+    $bindings = ($site.bindings.collection.bindingInformation | Select-Object -Unique) -join ", "
+
+    [PSCustomObject]@{
+        Name = $site.name
+        ApplicationPool = $site.applicationPool
+        State = $site.state
+        PhysicalPath = $site.physicalPath
+        Bindings = $bindings
+        Protocol = $protocol
+        PreloadEnabled = $preloadEnabled
+        VirtualDirectories = $virtualDirectories
+        Applications = ($applications -join ",")
+    }
+}
+Write-Output $sites`, siteName)
 	res := r.RunCommandJSON(psCommand)
 	res = strings.TrimRight(res, "\n")
 
@@ -272,6 +291,8 @@ func (r RemoteComputer) ListSingleSite(siteName string) []model.SitesIIS {
 }
 
 func setBindings(siteList []model.SitesIIS) []model.SitesIIS {
+
+	// TO DO HTTPS binding
 
 	for i := range siteList {
 		binding := siteList[i].Bindings
@@ -403,45 +424,6 @@ func (r RemoteComputer) setPhysicalPath(sitename string, path string) {
 		r.ExecuteCommand(psCommand)
 	}
 
-}
-
-func (r RemoteComputer) WebSitesListByStatus(status string) []model.SitesIIS {
-
-	psCommand := fmt.Sprintf(`
-	Import-Module WebAdministration	
-		$sites = Get-ChildItem -Path IIS:\Sites | Where-Object { $_.state -eq '%s' }| ForEach-Object {
-			$site = $_
-			$virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
-			$applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""
-		
-			$preloadEnabled = $site.Collection.preloadEnabled
-			if ($applications) {
-				$preloadEnabled += (Get-WebApplication -Site $site.Name).Collection.preloadEnabled
-			}
-		
-			$preloadEnabled = ($preloadEnabled | Select-Object -Unique) -join ", "
-		
-			[PSCustomObject]@{
-				Name = $site.name
-				ApplicationPool = $site.applicationPool
-				State = $site.state
-				PhysicalPath = $site.physicalPath
-				Bindings = $site.bindings.collection.bindingInformation
-				PreloadEnabled = $preloadEnabled
-				Protocol = $site.bindings.collection.protocol
-				VirtualDirectories = $virtualDirectories
-				Applications = ($applications -join ",")
-			}
-		}
-		 Write-Output $sites
-`, status)
-
-	res := r.RunCommandJSON(psCommand)
-	res = strings.TrimRight(res, "\n")
-	siteModel := util.JsonToStructIISSite(res)
-	r.prepModel(siteModel)
-
-	return setBindings(siteModel)
 }
 
 func errorGenerator(site string, computer string) {
