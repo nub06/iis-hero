@@ -35,7 +35,8 @@ var execCmd = &cobra.Command{
 	Use:   "exec",
 	Short: "Execute custom powershell commands on target computer",
 	Args:  cobra.ExactArgs(1),
-	Long:  `A longer description`,
+	Example: `iis-hero login -c <ComputerName>
+	iis-hero exec "iisreset /status"`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 

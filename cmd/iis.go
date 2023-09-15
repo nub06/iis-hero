@@ -69,7 +69,7 @@ var iisBackupCmd = &cobra.Command{
 
 var iisConfigCmd = &cobra.Command{
 	Use:   "config",
-	Short: "Management IIS configuration",
+	Short: "Manage IIS configuration",
 }
 
 var iisConfigRestore = &cobra.Command{
