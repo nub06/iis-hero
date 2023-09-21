@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/abdfnx/gosh"
 	"github.com/nub06/iis-hero/model"
 	"github.com/nub06/iis-hero/util"
 )
 
 func (r RemoteComputer) CreateBackupDir(source string, destination string) {
-
-	//Test-Path kontrolü eklenecek
 
 	psCommand := fmt.Sprintf(`
 	$date = (Get-Date).ToString('yyyyMMdd');
@@ -91,6 +90,11 @@ func (r RemoteComputer) CopyFromTarget(remotepath string, localpath string) {
 		psCommand := fmt.Sprintf(`Copy-Item -Path "%s" -Destination "%s" -FromSession $session -Recurse;`, remotepath, localpath)
 
 		r.OpenSession(psCommand)
+
+		ps := fmt.Sprintf("Get-ChildItem -Path '%s' -File -Recurse", localpath)
+
+		gosh.PowershellCommand(ps)
+
 	} else {
 		psCommand := fmt.Sprintf(`
 		$source="%s";
@@ -107,7 +111,9 @@ func (r RemoteComputer) CopyFromTarget(remotepath string, localpath string) {
 		`, remotepath, localpath)
 
 		r.OpenSession(psCommand)
+
 	}
+
 }
 
 func (r RemoteComputer) CopyToTarget(remotepath string, localpath string) {
