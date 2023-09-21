@@ -57,7 +57,7 @@ func (r RemoteComputer) GetPoolInfo(poolName string) model.AppPool {
 		res = r.RunCommandJSON(psCommand)
 	} else {
 
-		log.Fatalf(color.HiRedString(`Application Pool  "%s" couldn't find on computer "%s"`), poolName, r.ComputerName)
+		log.Fatalf(color.HiRedString(`Application Pool "%s" couldn't find on computer "%s"`), poolName, r.ComputerName)
 	}
 
 	m := util.JsonToStructAppPool(res)
@@ -99,6 +99,8 @@ func (r RemoteComputer) StopWebAppPool(appName string) {
 
 	r.ExecuteCommand(psCommand)
 
+	fmt.Println(color.HiGreenString("Stopping Application Pool %s", appName))
+
 }
 
 func (r RemoteComputer) StartWebAppPool(appName string) {
@@ -113,6 +115,8 @@ func (r RemoteComputer) StartWebAppPool(appName string) {
 	Start-WebAppPool -Name "%s"`, appName)
 
 	r.ExecuteCommand(psCommand)
+
+	fmt.Println(color.HiGreenString("Starting Application Pool %s", appName))
 
 }
 
@@ -145,6 +149,9 @@ func (r RemoteComputer) RestartWebAppPool(appName string, all bool) {
 	}
 
 	r.ExecuteCommand(psCommand)
+
+	fmt.Println(color.HiGreenString("Restarting Application Pool %s", appName))
+
 }
 
 func (r RemoteComputer) RemoveWebAppPool(isForce bool, appName string) {

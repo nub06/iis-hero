@@ -19,25 +19,25 @@ type RemoteComputer struct {
 
 func (r RemoteComputer) IsIISRunning() bool {
 
-	psCommand := "iisreset /status"
+	psCommand := "Set-ExecutionPolicy RemoteSigned iisreset /status"
 	status := r.RunCommandPlain(psCommand)
 
 	return strings.Contains(status, "Running")
 }
 
 func (r RemoteComputer) StartIIS() {
-	psCommand := "iisreset /start"
+	psCommand := "Set-ExecutionPolicy RemoteSigned iisreset /start"
 	r.ExecuteCommand(psCommand)
 
 }
 
 func (r RemoteComputer) StopIIS() {
-	psCommand := "iisreset /stop"
+	psCommand := "Set-ExecutionPolicy RemoteSigned iisreset /stop"
 	r.ExecuteCommand(psCommand)
 }
 
 func (r RemoteComputer) ResetIIS() {
-	psCommand := "iisreset"
+	psCommand := "Set-ExecutionPolicy RemoteSigned iisreset"
 	r.ExecuteCommand(psCommand)
 }
 

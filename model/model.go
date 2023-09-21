@@ -69,3 +69,9 @@ type VdirInfo struct {
 	SiteName        string `json:"SiteName"`
 	ApplicationName string `json:"ApplicationName"`
 }
+
+type ConfigInfo []struct {
+	Profile        string `json:"Profile"`
+	LastAccessTime string `json:"LastAccessTime"`
+	LastWriteTime  string `json:"LastWriteTime"`
+}

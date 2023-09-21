@@ -18,7 +18,9 @@ func (r RemoteComputer) CreateBackupDir(source string, destination string) {
 	$getDate = -join ($date, "_", $time);
 	$appDir = "%s";
 	$backupDir="%s\";
-	New-Item -ItemType Directory -Path $backupDir -Name $getDate;
+	if (-not (Test-Path -Path $backupDir -PathType Container)) {
+		New-Item -ItemType Directory -Path $backupDir -Name $getDate;
+	}
 	[string]$appSource = "$appDir\*";
 	[string]$backupDestination = "$backupDir$getDate";
 	Copy-item -Force -Recurse $appSource -Destination $backupDestination;`, source, destination)

@@ -143,8 +143,6 @@ func (r RemoteComputer) vDirsetName(vdir string, site string, rename string) {
 		psCommand := fmt.Sprintf(`Import-Module WebAdministration
 		Set-WebConfiguration -Filter "/system.applicationHost/sites/site[@name='%s']/application/virtualDirectory[@path='/%s']" -Value @{path="/%s"}
 		`, site, vdir, rename)
-
-		util.WriteFile(psCommand, "command.txt")
 		r.ExecuteCommand(psCommand)
 
 	}

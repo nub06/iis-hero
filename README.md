@@ -27,12 +27,18 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
 # Features
 
 #### Available Commands 
-
+- [login](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)   
+  - [clear](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer) (Clears the current login credentials)   
+  - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
+  - [save](#save-credentials-as-a-profile)  (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
+  - [use](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Allows you to switch between configuration profiles) 
+  - [show](#show-saved-profile)  (Show saved configuration profiles) 
+    - [current](#show-current-profile)  (Show current used configuration profile) 
 - [execute](#execute) (Execute custom powershell commands on target computer)
 - [start](#backing-up-iis-configuration) (Start all Internet services on target computer.)
 - [stop](#backing-up-iis-configuration) (Stop all Internet services on target computer)
 - [reset](#backing-up-iis-configuration) (Stop and then restart all Internet services on the target computer)
-- [config](#config-commands-usage) (Management IIS configuration)
+- [config](#iis-config-commands-usage) (Management IIS configuration)
   - [backup](#backing-up-iis-configuration) (Backup IIS configuration)
     - [remove](#removing-iis-configuration-backup-file) (Remove IIS configuration backup file)
   - [clear](#clearing-all-iis-configuration) (Clear all IIS configuration data.)
@@ -79,9 +85,7 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
   - [stop](#stopping-windows-service) (Stop the Windows Service)
   - [restart](#restarting-windows-service) (Restart the Windows Service)
   - [state](#current-state-of-the-windows-service) (Display the status of a Windows Service)
-- [login](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)   
-  - [clear](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer) (Clears the current login credentials)   
-  - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
+
 
 
 
@@ -117,8 +121,87 @@ iis-hero login -c ComputerName -d Domain -u UserName -p Password
 
 - Use `iis-hero login cred -f` if you want to view your password without asterisk.
 
+# Configuration Profiles
 
-# Config Commands usage
+With the latest release of iis-hero, you now have the ability to save multiple sets of credentials as configuration profiles, allowing you to easily switch between these profiles whenever needed.
+
+## Save credentials as a profile
+
+- Let's say you have a target computer like this
+
+```
+iis-hero login -c ComputerName -d Domain -u UserName -p Password
+```
+
+- Now, suppose you have another target computer like this.
+
+```
+iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
+```
+
+- The credentials information for these two target computers can be saved as a profile, so you don't have to enter all the computer details from scratch when you want to use different target computers; let's save the entered information.
+
+```
+iis-hero login -c ComputerName -d Domain -u UserName -p Password
+iis-hero login save profile1
+
+iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
+iis-hero login save profile2
+
+```
+
+- You can enter the profile name as an argument or use the --name flag, you should only use one of them!
+
+```
+
+iis-hero login -c ComputerName -d Domain -u UserName -p Password
+iis-hero login save --name profile1
+
+iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
+iis-hero login save --name profile2
+
+```
+
+
+## Shows saved profiles
+
+- This command shows saved configuration profiles.
+
+```
+iis-hero login show
+```
+
+![login_show](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show.PNG)
+
+## Shows current profile
+
+- This command shows saved configuration profiles.
+
+```
+iis-hero login show current
+```
+
+![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show_current.PNG)
+
+
+## Switch between profiles
+
+- This command allows you to switch between configuration profiles
+
+- If you have previously saved a configuration profile with the 'iis-hero login save' command, you can start using a profile you've saved before with the 'use' command
+
+- You can enter the profile name as an argument or use the --name flag, you should only use one of them!
+
+```
+iis-hero login use profile1
+iis-hero login use --name profile1
+```
+![use](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use.PNG)
+
+![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show_current_2.PNG)
+
+
+# IIS Config Commands usage
 
 ## Backing up IIS configuration.
 

@@ -27,15 +27,34 @@ var credCmd = &cobra.Command{
 		remotedomain := viper.GetString("remotedomain")
 
 		m := map[string]string{
-			"Hostname": remotehost,
-			"Username": remoteusername,
-			"Password": remotepassword,
-			"Domain":   remotedomain,
+
+			"Config Profile": "",
+			"Hostname":       remotehost,
+			"Username":       remoteusername,
+			"Password":       remotepassword,
+			"Domain":         remotedomain,
 		}
 
 		forcePass, _ := cmd.Flags().GetBool("force")
 
 		for k, v := range m {
+
+			if k == "Config Profile" {
+
+				err, config := service.ShowCurrentConfig()
+				if err != nil {
+
+					fmt.Printf("%s: Empty\n", k)
+				} else {
+					configProfile := config[0].Profile
+
+					if configProfile != "" {
+
+						fmt.Printf("%s: %s \n", k, configProfile)
+
+					}
+				}
+			}
 
 			if isStrNotEmpty(v) {
 
@@ -54,12 +73,19 @@ var credCmd = &cobra.Command{
 					}
 
 				} else {
-					fmt.Printf("%s: Empty\n", k)
+
+					if k != "Config Profile" {
+
+						fmt.Printf("%s: Empty\n", k)
+					}
 				}
 
 			} else {
-				fmt.Printf("%s: Empty\n", k)
+				if k != "Config Profile" {
+					fmt.Printf("%s: Empty\n", k)
+				}
 			}
+
 		}
 	},
 }
@@ -75,7 +101,7 @@ func setRemoteComputerDetails() service.RemoteComputer {
 
 	if viper.GetString("remotehost") == "" {
 
-		log.Fatal(color.HiGreenString("Check your creds. -c, --computer flag can not be empty"))
+		log.Fatal(color.HiGreenString("Check your credentials. -c, --computer flag can not be empty \ne.g:iis-hero login cred"))
 	}
 
 	c.ComputerName = decrypt(viper.GetString("remotehost"))

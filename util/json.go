@@ -320,3 +320,45 @@ func JsonToVdirInfo(resp string) model.VdirInfo {
 	return m
 
 }
+
+func JsonStructToConfigInfo(resp string) (error, model.ConfigInfo) {
+
+	data := []byte(resp)
+
+	var m model.ConfigInfo
+
+	var newErr error
+
+	err := json.Unmarshal(data, &m)
+
+	if err != nil {
+
+		dummyJson := `
+				{
+					"Profile":  "null",				
+					"LASTACCESSTIME":  "null",
+					"LastWriteTime": "null"
+				}
+				`
+		dummyData := []byte("[" + resp + "," + dummyJson + "]")
+
+		newErr = json.Unmarshal(dummyData, &m)
+
+		if newErr != nil {
+			return newErr, m
+		}
+
+		for i, s := range m {
+
+			if s.Profile == "null" || s.LastAccessTime == "null" {
+
+				m = append(m[:i], m[i+1:]...)
+			}
+
+		}
+
+	}
+
+	return newErr, m
+
+}
