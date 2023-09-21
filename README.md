@@ -31,7 +31,7 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
   - [clear](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer) (Clears the current login credentials)   
   - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
   - [save](#save-credentials-as-a-profile)  (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
-  - [use](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Allows you to switch between configuration profiles) 
+  - [use](#switch-between-profiles)  (Allows you to switch between configuration profiles) 
   - [show](#show-saved-profile)  (Show saved configuration profiles) 
     - [current](#show-current-profile)  (Show current used configuration profile) 
 - [execute](#execute) (Execute custom powershell commands on target computer)
@@ -199,6 +199,17 @@ iis-hero login use --name profile1
 ![use](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use.PNG)
 
 ![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/show_current_2.PNG)
+
+```
+iis-hero login use profile2
+```
+
+![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_2.PNG)
+
+```
+iis-hero login show current
+```
+![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_3.PNG)
 
 
 # IIS Config Commands usage
