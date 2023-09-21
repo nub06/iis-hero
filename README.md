@@ -167,7 +167,7 @@ iis-hero profile save --name profile2
 
 ## Shows saved profiles
 
-- This command shows saved configuration profiles.
+- This command lists saved configuration profiles.
 
 ```
 iis-hero profile ls
@@ -178,7 +178,7 @@ iis-hero profile list
 
 ## Shows current profile
 
-- This command shows saved configuration profiles.
+- This command shows currently used configuration profiles.
 
 ```
 iis-hero profile current
