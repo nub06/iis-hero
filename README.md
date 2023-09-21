@@ -181,7 +181,7 @@ iis-hero login show
 iis-hero login show current
 ```
 
-![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show_current.PNG)
+![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/show_current.PNG)
 
 
 ## Switch between profiles
@@ -198,7 +198,7 @@ iis-hero login use --name profile1
 ```
 ![use](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use.PNG)
 
-![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show_current_2.PNG)
+![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/show_current_2.PNG)
 
 
 # IIS Config Commands usage
