@@ -206,7 +206,7 @@ your current configuration profile information will appear empty until you save 
 		err, config := service.ShowCurrentConfig()
 
 		if err != nil {
-			log.Fatalf(color.HiRedString("Cannot find the current configuration profile. You may not have saved your configuration.\nYou can save your configuration using the following command:\n%s", color.HiCyanString("iis-hero login save --name <profile name>\niis-hero login save <profile name>")))
+			log.Fatalf(color.HiRedString("Cannot find the current configuration profile. You may not have saved your configuration or you may not have specified a profile with the \n'iis-hero login use <profile name>' command.\nor you can save your configuration using the following command:\niis-hero login save --name <profile name>"))
 
 		} else {
 			util.MakeTable(config)
