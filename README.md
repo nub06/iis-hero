@@ -123,7 +123,7 @@ iis-hero login -c ComputerName -d Domain -u UserName -p Password
 
 - Use `iis-hero login cred -f` if you want to view your password without asterisk.
 
-# Configuration Profiles
+# Profile commands usage 
 
 With the latest release of iis-hero, you now have the ability to save multiple sets of credentials as configuration profiles, allowing you to easily switch between these profiles whenever needed.
 
