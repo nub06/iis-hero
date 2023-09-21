@@ -115,9 +115,18 @@ iis-hero login -c ComputerName
 iis-hero login -c ComputerName -d Domain -u UserName -p Password
 ```
 
-- Once you have specified the target computer, it will remain the same until you change it. You don't need to specify it again every time, even if you restart your computer.
+- If you use the --profile flag in the login command and specify a profile name, iis-hero will save your credentials to the profile name you specified and you can switch between these profiles later.
 
-- Your login credentials will be stored encrypted in the `%appdata%\iis-hero`. If you don't want to store them, you can use the `iis-hero login clear` command in the program every time you finish your work.
+```
+iis-hero login -c ComputerName -d Domain -u UserName -p Password --profile computer1
+```
+![login](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login.PNG)
+
+![login2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login2.PNG)
+
+
+
+- Once you have specified the target computer, it will remain the same until you change it. You don't need to specify it again every time, even if you restart your computer.
 
 - You can view the credentials used by the application by using the `iis-hero login cred` command.
 

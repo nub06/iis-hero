@@ -105,7 +105,7 @@ func UseConfig(tag string) {
 
 	} else {
 
-		fmt.Println(color.HiGreenString("Configuration profile change successful. Current profile: '%s'", tag))
+		fmt.Println(color.HiGreenString("Configuration profile change successful. Current Profile: '%s'", tag))
 	}
 
 }

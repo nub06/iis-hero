@@ -58,6 +58,8 @@ iis-hero  -c <ComputerName> -d <Domain> -u <UserName> -p <Password>`,
 		clearViperInfo()
 		service.RemoveCurrentConf()
 
+		profile, _ := cmd.Flags().GetString("profile")
+
 		if remoteHost == "local" || remoteHost == "localhost" {
 
 			remoteHost, _ = os.Hostname()
@@ -98,6 +100,12 @@ iis-hero  -c <ComputerName> -d <Domain> -u <UserName> -p <Password>`,
 				green("Password"), green(remotePassword))
 
 			fmt.Println(text)
+
+			if profile != "" {
+
+				service.SaveConfig(profile)
+				service.UseConfig(profile)
+			}
 
 		}
 		if err := viper.WriteConfig(); err != nil {
@@ -321,12 +329,10 @@ func init() {
 	loginCmd.PersistentFlags().StringVarP(&remoteHost, "computer", "c", "", "Identify the target computer hostname")
 	loginCmd.PersistentFlags().StringVarP(&remoteUsername, "username", "u", "", "Identify the user name")
 	loginCmd.PersistentFlags().StringVarP(&remotePassword, "password", "p", "", "Identify the password")
+	loginCmd.Flags().String("profile", "", "Identify the configuration profile name to save as profile")
 
 	saveCmd.Flags().String("name", "", "Identify the configuration profile name")
 	useCmd.Flags().String("name", "", "Identify the configuration profile name")
 
 	confRemoveCmd.Flags().BoolP("all", "a", false, "Remove all saved Configuration Profiles")
-
-	//pool stop uyarı yok, nelerde yok check
-
 }
