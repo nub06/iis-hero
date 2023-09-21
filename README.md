@@ -30,11 +30,11 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
 - [login](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)   
   - [clear](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer) (Clears the current login credentials)   
   - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
-- [profile](#configuration-profiles)
+- [profile](#profile-commands-usage)
   - [save](#save-credentials-as-a-profile) (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
   - [use](#switch-between-profiles)  (Allows you to switch between configuration profiles) 
-  - [list](#shows-saved-profile)  (List saved configuration profiles) 
-  - [current](#shows-current-profile)  (Display current used configuration profile)  
+  - [list](#list-saved-profiles)  (List saved configuration profiles) 
+  - [current](#current-profile)  (Display current used configuration profile)  
   - [remove](#remove-profiles)  (Remove saved configuration profiles)   
 - [execute](#execute) (Execute custom powershell commands on target computer)
 - [start](#backing-up-iis-configuration) (Start all Internet services on target computer.)
@@ -165,7 +165,7 @@ iis-hero profile save --name profile2
 ```
 
 
-## Shows saved profiles
+## List saved profiles
 
 - This command lists saved configuration profiles.
 
@@ -176,7 +176,7 @@ iis-hero profile list
 
 ![login_show](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show.PNG)
 
-## Shows current profile
+## Current profile
 
 - This command shows currently used configuration profiles.
 
