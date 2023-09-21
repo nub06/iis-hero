@@ -32,7 +32,7 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
   - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
   - [save](#save-credentials-as-a-profile)  (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
   - [use](#switch-between-profiles)  (Allows you to switch between configuration profiles) 
-  - [show](#shows-saved-profile)  (Show saved configuration profiles) 
+  - [show](#shows-saved-profiles)  (Show saved configuration profiles) 
     - [current](#shows-current-profile)  (Show current used configuration profile) 
 - [execute](#execute) (Execute custom powershell commands on target computer)
 - [start](#backing-up-iis-configuration) (Start all Internet services on target computer.)
