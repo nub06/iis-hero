@@ -976,6 +976,9 @@ iis-hero folder push --local D:\Folder --target D:\DestFolder
 iis-hero folder push --local D:\try.txt --target D:\DestFolder
 ```
 
+![push](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/push.gif)
+
+
 
 ## Pull Command
 
@@ -995,3 +998,5 @@ iis-hero folder push --local D:\try.txt --target D:\DestFolder
 iis-hero folder pull --local D:\LocalDestFolder  --target D:\DestFolder
 iis-hero folder pull --local D:\LocalDestFolder  --target D:\hero.json
 ```
+
+![pull](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/pull.gif)
