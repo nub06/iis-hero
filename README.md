@@ -210,7 +210,7 @@ iis-hero profile use profile2
 ![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_2.PNG)
 
 ```
-iis-hero profile ls current
+iis-hero profile current
 ```
 ![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_3.PNG)
 
