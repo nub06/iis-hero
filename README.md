@@ -30,10 +30,12 @@ You can rename the binary name if you don't want to use CLI as `iis-hero`
 - [login](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)   
   - [clear](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer) (Clears the current login credentials)   
   - [cred](#to-use-the-this-cli-first-you-need-to-specify-the-target-computer)  (Display current credentials) 
-  - [save](#save-credentials-as-a-profile)  (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
+-[profile](#configuration-profiles)
+  - [save](#save-credentials-as-a-profile) (Allows you to save the credentials created with the 'iis-hero login' command as a configuration profile) 
   - [use](#switch-between-profiles)  (Allows you to switch between configuration profiles) 
-  - [show](#shows-saved-profiles)  (Show saved configuration profiles) 
-    - [current](#shows-current-profile)  (Show current used configuration profile) 
+  - [list](#shows-saved-profile)  (List saved configuration profiles) 
+  - [current](#shows-current-profile)  (Display current used configuration profile)  
+  - [remove](#remove-profiles)  (Remove saved configuration profiles)   
 - [execute](#execute) (Execute custom powershell commands on target computer)
 - [start](#backing-up-iis-configuration) (Start all Internet services on target computer.)
 - [stop](#backing-up-iis-configuration) (Stop all Internet services on target computer)
@@ -143,10 +145,10 @@ iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
 
 ```
 iis-hero login -c ComputerName -d Domain -u UserName -p Password
-iis-hero login save profile1
+iis-hero profile save profile1
 
 iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
-iis-hero login save profile2
+iis-hero profile save profile2
 
 ```
 
@@ -155,10 +157,10 @@ iis-hero login save profile2
 ```
 
 iis-hero login -c ComputerName -d Domain -u UserName -p Password
-iis-hero login save --name profile1
+iis-hero profile save --name profile1
 
 iis-hero login -c ComputerName1 -d Domain1 -u UserName1 -p Password1
-iis-hero login save --name profile2
+iis-hero profile save --name profile2
 
 ```
 
@@ -168,7 +170,8 @@ iis-hero login save --name profile2
 - This command shows saved configuration profiles.
 
 ```
-iis-hero login show
+iis-hero profile ls
+iis-hero profile list
 ```
 
 ![login_show](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login_show.PNG)
@@ -178,7 +181,7 @@ iis-hero login show
 - This command shows saved configuration profiles.
 
 ```
-iis-hero login show current
+iis-hero profile current
 ```
 
 ![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/show_current.PNG)
@@ -188,28 +191,62 @@ iis-hero login show current
 
 - This command allows you to switch between configuration profiles
 
-- If you have previously saved a configuration profile with the 'iis-hero login save' command, you can start using a profile you've saved before with the 'use' command
+- If you have previously saved a configuration profile with the 'iis-hero profile save' command, you can start using a profile you've saved before with the 'use' command
 
 - You can enter the profile name as an argument or use the --name flag, you should only use one of them!
 
 ```
-iis-hero login use profile1
-iis-hero login use --name profile1
+iis-hero profile use profile1
+iis-hero profile use --name profile1
 ```
 ![use](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use.PNG)
 
 ![login_show_current](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/show_current_2.PNG)
 
 ```
-iis-hero login use profile2
+iis-hero profile use profile2
 ```
 
 ![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_2.PNG)
 
 ```
-iis-hero login show current
+iis-hero profile ls current
 ```
 ![use2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/use_3.PNG)
+
+
+## Remove profiles
+
+- This command allows you remove saved configuration profiles
+
+```
+iis-hero profile rm profile1
+```
+
+![del_1](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/del_1.PNG)
+
+```
+iis-hero profile ls
+```
+
+![del_2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/del_2.PNG)
+
+- To remove all saved profiles you can use:
+
+```
+iis-hero profile rm -a
+iis-hero profile rm --all
+```
+
+![del_all](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/del_all.PNG)
+
+
+```
+iis-hero profile ls
+iis-hero profile list
+```
+
+![del_all2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/del_all_2.PNG)
 
 
 # IIS Config Commands usage

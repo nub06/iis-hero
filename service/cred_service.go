@@ -110,7 +110,7 @@ func UseConfig(tag string) {
 
 }
 
-func ShowSavedConfigs() model.ConfigInfo {
+func ShowSavedConfigs() (error, model.ConfigInfo) {
 
 	source := filepath.Join(os.Getenv("APPDATA"), "iis-hero", "saved_objects")
 
@@ -144,9 +144,9 @@ $files | ConvertTo-Json
 
 	response = strings.TrimRight(response, "\r\n")
 
-	_, configList := util.JsonStructToConfigInfo(response)
+	error, configList := util.JsonStructToConfigInfo(response)
 
-	return configList
+	return error, configList
 
 }
 
@@ -200,5 +200,62 @@ func RemoveCurrentConf() {
 `, path)
 
 	gosh.PowershellCommand(psCommand)
+
+}
+
+func DeleteConfiguration(tag string, isAll bool) {
+
+	source := filepath.Join(os.Getenv("APPDATA"), "iis-hero", "saved_objects")
+
+	var psCommand string
+
+	if isAll {
+
+		psCommand = fmt.Sprintf(`
+	
+		$dirPath = "%s"
+		if (Test-Path -Path $dirPath -PathType Container) {
+		Remove-Item -Path $dirPath -Force -Recurse
+		Write-Output "Success"
+		}else{
+			Write-Output "Error"
+		}`, source)
+
+	} else {
+
+		conf := fmt.Sprintf("saved_%s.yaml", tag)
+
+		source = filepath.Join(source, conf)
+
+		psCommand = fmt.Sprintf(`
+		$confPath= "%s"	
+		if (Test-Path -Path $confPath  -PathType Leaf) {
+			Remove-Item -Path $confPath -Force
+			Write-Output "Success"
+			}else{
+				Write-Output "Error"
+			}`, source)
+
+	}
+
+	_, res, _ := gosh.PowershellOutput(psCommand)
+
+	if strings.Contains(res, "Error") {
+
+		if !isAll {
+
+			fmt.Println(color.HiRedString("Cannot find Configuration Profile '%s' ", tag))
+		} else {
+			fmt.Println(color.HiRedString("Cannot find any Configuration Profile  "))
+
+		}
+	} else {
+
+		if isAll {
+			fmt.Println(color.HiGreenString("Deleting all configuration profiles"))
+		} else {
+			fmt.Println(color.HiGreenString("Deleting Configuration Profile: '%s'", tag))
+		}
+	}
 
 }

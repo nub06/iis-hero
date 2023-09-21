@@ -127,11 +127,16 @@ var clearCmd = &cobra.Command{
 	},
 }
 
+var profileCmd = &cobra.Command{
+	Use:   "profile",
+	Short: "This command allows you to manage your configuration profiles",
+}
+
 var saveCmd = &cobra.Command{
 	Use:   "save",
 	Short: "This command allows you to save the credentials created with the 'iis-hero login' command as a configuration profile",
-	Example: `iis-hero login save dev
-iis-hero login save --name dev`,
+	Example: `iis-hero profile save dev
+iis-hero profile save --name dev`,
 	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -158,9 +163,9 @@ iis-hero login save --name dev`,
 var useCmd = &cobra.Command{
 	Use:   "use",
 	Short: "Use command allows you to switch between configuration profiles.",
-	Long:  `If you have previously saved a configuration profile with the 'iis-hero login save' command, you can start using a profile you've saved before with the 'use' command`,
-	Example: `iis-hero login use dev
-iis-hero login use --name dev`,
+	Long:  `If you have previously saved a configuration profile with the 'iis-hero profile save' command, you can start using a profile you've saved before with the 'use' command`,
+	Example: `iis-hero profile use dev
+iis-hero profile use --name dev`,
 	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -183,15 +188,51 @@ iis-hero login use --name dev`,
 	},
 }
 
+var confRemoveCmd = &cobra.Command{
+	Use:   "remove",
+	Short: "This command allows you to save the credentials created with the 'iis-hero login' command as a configuration profile",
+	Example: `iis-hero profile save dev
+iis-hero profile save --name dev`,
+	Args:    cobra.MaximumNArgs(1),
+	Aliases: []string{"rm"},
+	Run: func(cmd *cobra.Command, args []string) {
+
+		var confName string
+
+		isAll, _ := cmd.Flags().GetBool("all")
+
+		if len(args) != 1 || isAll {
+			if isAll && len(args) == 1 {
+				log.Fatal(color.HiRedString("You can not use Profile Name and --all flag together."))
+			}
+		} else {
+			confName = args[0]
+		}
+
+		service.DeleteConfiguration(confName, isAll)
+
+	},
+}
+
 var showCmd = &cobra.Command{
-	Use:     "show",
-	Short:   "This command shows saved configuration profiles.",
-	Example: `iis-hero login show`,
+	Use:     "list",
+	Short:   "This command lists saved configuration profiles.",
+	Example: `iis-hero profile list`,
+	Aliases: []string{"ls"},
 
 	Args: cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		util.MakeTable(service.ShowSavedConfigs())
+		err, configList := service.ShowSavedConfigs()
+
+		if err != nil {
+
+			log.Fatal(color.HiRedString("Cannot find any saved configuration profile"))
+
+		} else {
+
+			util.MakeTable(configList)
+		}
 	},
 }
 
@@ -199,14 +240,14 @@ var showCurrentCmd = &cobra.Command{
 	Use:   "current",
 	Short: "This command displays the currently used configuration profiles.",
 	Long: `If you create new credentials with the 'iis-hero login' command,
-your current configuration profile information will appear empty until you save this information with the 'iis-hero login save' command`,
+your current configuration profile information will appear empty until you save this information with the 'iis-hero profile save' command`,
 	Args: cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		err, config := service.ShowCurrentConfig()
 
 		if err != nil {
-			log.Fatalf(color.HiRedString("Cannot find the current configuration profile. You may not have saved your configuration or you may not have specified a profile with the \n'iis-hero login use <profile name>' command.\nor you can save your configuration using the following command:\niis-hero login save --name <profile name>"))
+			log.Fatalf(color.HiRedString("Cannot find the current configuration profile. You may not have saved your configuration or you may not have specified a profile with the \n'iis-hero profile use <profile name>' command.\nor you can save your configuration using the following command:\niis-hero profile save --name <profile name>"))
 
 		} else {
 			util.MakeTable(config)
@@ -244,16 +285,19 @@ func init() {
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.AddCommand(loginCmd)
 	loginCmd.AddCommand(clearCmd)
-	loginCmd.AddCommand(saveCmd)
-	loginCmd.AddCommand(useCmd)
-	loginCmd.AddCommand(showCmd)
-	showCmd.AddCommand(showCurrentCmd)
+	profileCmd.AddCommand(saveCmd)
+	profileCmd.AddCommand(useCmd)
+	profileCmd.AddCommand(showCmd)
+	profileCmd.AddCommand(confRemoveCmd)
+	profileCmd.AddCommand(showCurrentCmd)
 
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	loginCmd.AddCommand(credCmd)
 	rootCmd.AddCommand(winSvcCmd)
 	rootCmd.AddCommand(execCmd)
 	rootCmd.AddCommand(folderCmd)
+
+	rootCmd.AddCommand(profileCmd)
 
 	rootCmd.AddCommand(resetCmd)
 	rootCmd.AddCommand(iisStopCmd)
@@ -280,6 +324,8 @@ func init() {
 
 	saveCmd.Flags().String("name", "", "Identify the configuration profile name")
 	useCmd.Flags().String("name", "", "Identify the configuration profile name")
+
+	confRemoveCmd.Flags().BoolP("all", "a", false, "Remove all saved Configuration Profiles")
 
 	//pool stop uyarı yok, nelerde yok check
 
