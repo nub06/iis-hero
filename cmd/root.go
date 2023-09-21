@@ -89,8 +89,6 @@ iis-hero  -c <ComputerName> -d <Domain> -u <UserName> -p <Password>`,
 		} else {
 			isRemote = true
 			viper.Set("isRemote", isRemote)
-			fmt.Println(remoteDomain, remoteHost, remoteHost, remotePassword)
-
 			green := color.New(color.FgHiGreen).SprintFunc()
 
 			text := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s",
