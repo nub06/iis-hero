@@ -120,7 +120,7 @@ iis-hero login -c ComputerName -d Domain -u UserName -p Password
 ```
 iis-hero login -c ComputerName -d Domain -u UserName -p Password --profile computer1
 ```
-![login](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login.PNG)
+![login](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login.png)
 
 ![login2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login2.PNG)
 
