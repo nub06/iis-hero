@@ -80,7 +80,8 @@ iis-hero  -c <ComputerName> -d <Domain> -u <UserName> -p <Password>`,
 
 			//The isRemote flag is being set to false because one of the required credentials is empty.
 
-			fmt.Println(color.HiGreenString("iis-hero will be run on target computer '%s'", remoteHost))
+			fmt.Println(color.HiCyanString("iis-hero will be run on target computer(localhost) '%s'", remoteHost))
+			fmt.Println(color.HiCyanString("Current profile information is resetting."))
 
 			isRemote = false
 
@@ -89,20 +90,26 @@ iis-hero  -c <ComputerName> -d <Domain> -u <UserName> -p <Password>`,
 		} else {
 			isRemote = true
 			viper.Set("isRemote", isRemote)
-			green := color.New(color.FgHiGreen).SprintFunc()
+			cyan := color.New(color.FgHiCyan).SprintFunc()
 
-			text := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s",
-				green("Domain"), green(remoteDomain),
-				green("Host"), green(remoteHost),
-				green("Username"), green(remoteUsername),
-				green("Password"), green(remotePassword))
+			credInfo := fmt.Sprintf("%s: %s\n%s: %s\n%s: %s\n%s: %s",
+				cyan("Domain"), cyan(remoteDomain),
+				cyan("Host"), cyan(remoteHost),
+				cyan("Username"), cyan(remoteUsername),
+				cyan("Password"), cyan(remotePassword))
 
-			fmt.Println(text)
+			fmt.Println(credInfo)
 
 			if profile != "" {
-
 				service.SaveConfig(profile)
 				service.UseConfig(profile)
+
+			} else {
+
+				fmt.Println(cyan("Current Profile: Empty"))
+				fmt.Println(color.HiGreenString("Profile information is not specified."))
+				fmt.Println(color.HiGreenString("Current profile information is resetting."))
+
 			}
 
 		}

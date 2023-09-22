@@ -163,8 +163,7 @@ func (r RemoteComputer) ListAllSites() []model.SitesIIS {
 
 	psCommand := `
 	Import-Module WebAdministration
-
-$sites = Get-ChildItem -Path IIS:\Sites | ForEach-Object {
+    $sites = Get-ChildItem -Path IIS:\Sites | ForEach-Object {
     $site = $_
     $virtualDirectories = (Get-WebVirtualDirectory -Site $site.Name).Path -replace "^/", "" -join ","
     $applications = (Get-WebApplication -Site $site.Name).Path -replace "^/", ""

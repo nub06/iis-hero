@@ -50,7 +50,7 @@ func SaveConfig(tag string) {
 
 	if strings.Contains(res, "Success") {
 
-		fmt.Println(color.HiGreenString("Current credentials has been saved a configuration profile '%s' successfully.", tag))
+		fmt.Println(color.HiGreenString("Current credentials has been saved as a configuration profile '%s' successfully.", tag))
 	} else {
 
 		fmt.Println(color.HiRedString("Failed to save the configuration profile: '%s'", tag))
@@ -105,7 +105,7 @@ func UseConfig(tag string) {
 
 	} else {
 
-		fmt.Println(color.HiGreenString("Configuration profile change successful. Current Profile: '%s'", tag))
+		fmt.Println(color.HiGreenString("Configuration profile change successful.\nCurrent Profile: '%s'", tag))
 	}
 
 }
@@ -252,7 +252,7 @@ func DeleteConfiguration(tag string, isAll bool) {
 	} else {
 
 		if isAll {
-			fmt.Println(color.HiGreenString("Deleting all configuration profiles"))
+			fmt.Println(color.HiGreenString("Deleting all Configuration Profiles"))
 		} else {
 			fmt.Println(color.HiGreenString("Deleting Configuration Profile: '%s'", tag))
 		}

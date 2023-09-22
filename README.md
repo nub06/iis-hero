@@ -115,14 +115,17 @@ iis-hero login -c ComputerName
 iis-hero login -c ComputerName -d Domain -u UserName -p Password
 ```
 
+![login3](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/log2.png)
+
+
 - If you use the --profile flag in the login command and specify a profile name, iis-hero will save your credentials to the profile name you specified and you can switch between these profiles later.
 
 ```
 iis-hero login -c ComputerName -d Domain -u UserName -p Password --profile computer1
 ```
-![login](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login1.png)
+![login](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/log1.png)
 
-![login2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/login2.PNG)
+![login2](https://raw.githubusercontent.com/nub06/iis-hero/main/gifs/log3.png)
 
 
 
