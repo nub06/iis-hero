@@ -53,7 +53,7 @@ func SaveConfig(tag string) {
 		fmt.Println(color.HiGreenString("Current credentials has been saved as a configuration profile '%s' successfully.", tag))
 	} else {
 
-		fmt.Println(color.HiRedString("Failed to save the configuration profile: '%s'", tag))
+		fmt.Println(color.HiRedString("Failed to save the configuration profile: '%s'.", tag))
 
 	}
 }
@@ -101,11 +101,11 @@ func UseConfig(tag string) {
 
 	if strings.Contains(resp, "Error") {
 
-		log.Fatalf(color.HiRedString("Configuration profile not found: %s\nYou can try listing all saved configuration profiles, e.g.:  %s", tag, color.HiGreenString("\niis-hero login show")))
+		log.Fatalf(color.HiRedString("Configuration profile not found: %s\nYou can try listing all saved configuration profiles, e.g.:  %s", tag, color.HiGreenString("\niis-hero profile ls")))
 
 	} else {
 
-		fmt.Println(color.HiGreenString("Configuration profile change successful.\nCurrent Profile: '%s'", tag))
+		fmt.Println(color.HiGreenString("Configuration profile change successful.\nCurrent Profile: '%s'.", tag))
 	}
 
 }
@@ -244,17 +244,17 @@ func DeleteConfiguration(tag string, isAll bool) {
 
 		if !isAll {
 
-			fmt.Println(color.HiRedString("Cannot find Configuration Profile '%s' ", tag))
+			fmt.Println(color.HiRedString("Cannot find Configuration Profile '%s'.", tag))
 		} else {
-			fmt.Println(color.HiRedString("Cannot find any Configuration Profile  "))
+			fmt.Println(color.HiRedString("Cannot find any Configuration Profile."))
 
 		}
 	} else {
 
 		if isAll {
-			fmt.Println(color.HiGreenString("Deleting all Configuration Profiles"))
+			fmt.Println(color.HiGreenString("Deleting all Configuration Profiles..."))
 		} else {
-			fmt.Println(color.HiGreenString("Deleting Configuration Profile: '%s'", tag))
+			fmt.Println(color.HiGreenString("Deleting Configuration Profile: '%s'...", tag))
 		}
 	}
 
